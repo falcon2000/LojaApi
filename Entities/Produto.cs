@@ -7,6 +7,6 @@ namespace LojaApi.Entities
         public int Id { get; set; }
         public string Descricao { get; set; } = string.Empty;
         public decimal Valor { get; set; }
-        public decimal Saldo { get; set; }    
+        public decimal Estoque { get; set; }    
     }
 }
