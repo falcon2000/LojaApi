@@ -34,39 +34,21 @@ namespace LojaApi.Controllers
         [HttpPost]
         public ActionResult<Produto> Add(Produto novoProduto)
         {
-            if (string.IsNullOrWhiteSpace(novoProduto.Descricao))
+            try
             {
-                return BadRequest("A descrição do produto é obrigatória");
+                var produtoAdicionado = _produtoService.Adicionar(novoProduto);
+                return CreatedAtAction(nameof(GetById), new { id = produtoAdicionado.Id }, produtoAdicionado);
             }
-            if (decimal.IsNegative(novoProduto.Valor))
+            catch (Exception ex)
             {
-                return BadRequest("O valor não pode ser negativo");
+                // Retorna 400 Bad Request com a mensagem de erro de negócio. 
+                return BadRequest(ex.Message);
             }
-            if (decimal.IsNegative(novoProduto.Estoque))
-            {
-                return BadRequest("O Estoque não pode ser negativo");
-            }
-
-            var produtoCriado = _produtoService.Adicionar(novoProduto);
-            return CreatedAtAction(nameof(GetById), new { id = produtoCriado.Id }, produtoCriado);
         }
 
         [HttpPut("{id}")]
         public ActionResult<Produto> Update(int id, Produto produtoAtualizado)
         {
-            if (string.IsNullOrWhiteSpace(produtoAtualizado.Descricao))
-            {
-                return BadRequest("A descrição do produto é obrigatória");
-            }
-            if (decimal.IsNegative(produtoAtualizado.Valor))
-            {
-                return BadRequest("O valor não pode ser negativo");
-            }
-            if (decimal.IsNegative(produtoAtualizado.Estoque))
-            {
-                return BadRequest("O Estoque não pode ser negativo");
-            }
-
             var produto = _produtoService.Atualizar(id, produtoAtualizado);
             if (produto == null) return NotFound();
             return Ok(produto);

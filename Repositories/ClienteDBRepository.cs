@@ -1,7 +1,6 @@
 using System;
 using LojaApi.Data;
 using LojaApi.Entities;
-using LojaApi.Repositories.Interfaces;
 
 namespace LojaApi.Repositories;
 

@@ -1,5 +1,4 @@
 using LojaApi.Entities;
-using LojaApi.Repositories.Interfaces;
 
 public class CategoriaRepository : ICategoriaRepository
 {

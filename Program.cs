@@ -1,6 +1,5 @@
 // Program.cs
 using LojaApi.Repositories;
-using LojaApi.Repositories.Interfaces;
 using LojaApi.Services;
 using LojaApi.Services.Interfaces;
 using LojaApi.Data;

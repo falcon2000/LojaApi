@@ -1,54 +1,53 @@
 using System;
 using LojaApi.Entities;
-using LojaApi.Repositories.Interfaces;
 using LojaApi.Services.Interfaces;
 
 namespace LojaApi.Services
 {
     public class CategoriaService : ICategoriaService
     {
-        private readonly ICategoriaRepository _categoriaRepository;
+        public readonly ICategoriaRepository _context;
 
-        public CategoriaService(ICategoriaRepository categoriaRepository)
+        public CategoriaService(ICategoriaRepository context)
         {
-            _categoriaRepository = categoriaRepository;
+            _context = context;
         }
 
         public List<Categoria> ObterTodos()
         {
-            return _categoriaRepository.ObterTodos().Where(c => c.Ativo).ToList();
+            return _context.ObterTodos();
         }
 
         public Categoria? ObterPorId(int id)
         {
-            return _categoriaRepository.ObterPorId(id);
+            return _context.ObterPorId(id);
         }
 
         public Categoria Adicionar(Categoria novaCategoria)
         {
-            return _categoriaRepository.Adicionar(novaCategoria);
+            return _context.Adicionar(novaCategoria);
         }
 
         public Categoria? Atualizar(int id, Categoria categoriaAtualizada)
         {
-            //if (id != categoriaAtualizado.Id) return null;
-            var categoria = _categoriaRepository.ObterPorId(id);
+            var categoria = _context.ObterPorId(id);
             if (categoria == null)
             {
-                return null;  
-            }    
-            return _categoriaRepository.Atualizar(id, categoriaAtualizada);
+                throw new Exception("A categoria informada para atualização não existe");
+            }
+            return _context.Atualizar(id, categoriaAtualizada);
         }
 
         public bool Remover(int id)
         {
-            var categoria = _categoriaRepository.ObterPorId(id);
-            if (categoria != null)
+            var categoria = _context.ObterPorId(id);
+            if (categoria == null)
             {
-                categoria.Ativo = false;
-                return _categoriaRepository.Atualizar(id, categoria) != null;
+                throw new Exception("A categoria informada não existe");
             }
-            return false;
+
+            categoria.Ativo = false;
+            return _context.Atualizar(id, categoria) != null;
         }
     }
 }
